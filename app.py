@@ -1,4 +1,6 @@
 #%% pakete
+import streamlit as st
+import streamlit.components.v1 as components
 import gradio as gr
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai.chat_models import ChatOpenAI
@@ -60,11 +62,17 @@ def get_model_output(user_prompt, history):
     **Jahr:** {res['release_year']}
     """
     return output
-    
-if __name__ == "__main__":
-    # Beispiel für Gradio Interface
-    with gr.Blocks() as demo:
-        gr.Markdown("## Musikexperten-Chatbot: Nenne eine Songzeile!")
-        chat = gr.ChatInterface(fn=get_model_output)
 
-    demo.launch()
+demo = gr.Interface(fn=get_model_output)
+
+url = demo.launch(share=True, prevent_thread_lock=True)[2]
+
+# 4. Use Streamlit components to display the Gradio app
+components.iframe(url, height=500)
+# if __name__ == "__main__":
+#     # Beispiel für Gradio Interface
+#     with gr.Blocks() as demo:
+#         gr.Markdown("## Musikexperten-Chatbot: Nenne eine Songzeile!")
+#         chat = gr.ChatInterface(fn=get_model_output)
+
+#     demo.launch()
