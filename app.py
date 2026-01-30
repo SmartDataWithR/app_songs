@@ -63,15 +63,19 @@ def get_model_output(user_prompt, history=None):
     """
     return output
 
+import streamlit as st
+import streamlit.components.v1 as components
+
+# Launch Gradio Interface in background and obtain url
 demo = gr.Interface(
     fn=get_model_output,
     inputs=gr.Textbox(label="Songzeile eingeben"),
     outputs=gr.Markdown(label="Informationen")
 )
+_, _, url = demo.launch(share=True, prevent_thread_lock=True)
 
-url = demo.launch(share=True, prevent_thread_lock=True)[2]
-
-# 4. Use Streamlit components to display the Gradio app
+# Use Streamlit to display the Gradio app in an iframe
+st.markdown("#### Musikexperten-Chatbot: Nenne eine Songzeile!")
 components.iframe(url, height=500)
 # if __name__ == "__main__":
 #     # Beispiel für Gradio Interface
