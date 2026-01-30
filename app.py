@@ -48,7 +48,7 @@ model = ChatOpenAI(
 #%% Chain erstellen
 chain = prompt_template | model | parser
 
-def get_model_output(user_prompt, history):
+def get_model_output(user_prompt, history=None):
     res = chain.invoke({"song_line": user_prompt})
     res = res.model_dump()
     print(f"Res: {res}")
@@ -63,7 +63,11 @@ def get_model_output(user_prompt, history):
     """
     return output
 
-demo = gr.Interface(fn=get_model_output)
+demo = gr.Interface(
+    fn=get_model_output,
+    inputs=gr.Textbox(label="Songzeile eingeben"),
+    outputs=gr.Markdown(label="Informationen")
+)
 
 url = demo.launch(share=True, prevent_thread_lock=True)[2]
 
